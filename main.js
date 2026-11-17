@@ -1,10 +1,10 @@
 // main.js - 앱 초기화
 
-import * as State from './js/state.js';
-import { initScene, animate } from './js/scene.js';
-import { renderItemBar, updateStageButtons } from './js/ui.js';
-import { initDrawingCanvas, initColorPalette, setDrawingMode } from './js/drawing.js';
-import './js/archive.js';
+import * as State from './state.js';
+import { initScene, animate } from './scene.js';
+import { renderItemBar, updateStageButtons } from './ui.js';
+import { initDrawingCanvas, initColorPalette, setDrawingMode } from './drawing.js';
+import './archive.js';
 
 window.startGame = function () {
   if (State.hasStarted) return;
