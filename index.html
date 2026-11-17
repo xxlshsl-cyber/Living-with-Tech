@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Living with Tech</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.157.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.157.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- 메인 시작 화면 (이것만 남기기) -->
+    <div id="start-screen">
+        <div id="start-inner">
+            <h1 id="start-title">Living with Tech</h1>
+            <p id="start-subtitle">인간 - 기술 간의 관계 탐색을 통한 기술 발전 방향성에 대한 제안 연구</p>
+            <!-- 🔥 여기서 startGame() 호출 -->
+                        <div style="display:flex; gap:16px; justify-content:center; margin-top:8px;">
+                            <button id="start-button" class="start-btn">Start</button>
+                            <button id="archive-button" class="start-btn archive-btn">Archiving</button>
+                        </div>
+        </div>
+    </div>
+
+    <!-- 실제 앱 화면 -->
+    <div id="app-container" style="display: none;">
+        <!-- 상단 UI -->
+        <div id="ui-container">
+            <h1>Living with Tech</h1>
+            <!-- Stage information: label, description, optional tips/checklist -->
+            <div id="step-info" class="stage-1" aria-live="polite">
+                <div id="step-label">Step 01</div>
+                <div id="step-desc">당신은 어떤 모습인가요?</div>
+                <ul id="step-tips" class="step-tips" aria-hidden="true"></ul>
+            </div>
+        </div>
+
+        <!-- 실시간 3D 화면 위의 드로잉 레이어 -->
+        <div id="draw-layer">
+        <canvas id="draw-canvas" aria-label="드로잉 캔버스"></canvas>
+        </div>
+        <div id="draw-toolbar">
+            <button id="draw-undo" onclick="undoDrawing()" aria-label="드로잉 되돌리기" title="Command + Z" disabled>되돌리기</button>
+            <button id="draw-redo" onclick="redoDrawing()" aria-label="드로잉 다시 실행" title="Command + Shift + Z" disabled>다시 실행</button>
+            <button id="draw-erase" type="button" onclick="toggleStrokeEraser()" aria-pressed="false" title="지울 획을 클릭하세요">한 획 지우기</button>
+            <button onclick="saveDrawingImage()">이미지 저장</button>
+            <button onclick="clearAllStrokes()">전체 획 지우기</button>
+            <button class="draw-color-btn" data-draw-color="#000000" aria-label="검정"></button>
+            <button class="draw-color-btn" data-draw-color="#ffffff" aria-label="흰색"></button>
+            <button class="draw-color-btn" data-draw-color="#ff6b6b" aria-label="빨강"></button>
+            <button class="draw-color-btn" data-draw-color="#4dabf7" aria-label="파랑"></button>
+            <button class="draw-color-btn" data-draw-color="#51cf66" aria-label="초록"></button>
+            <button class="draw-color-btn" data-draw-color="#f59f00" aria-label="노랑"></button>
+        </div>
+        <div id="stage-actions">
+            <button id="btn-prev" class="stage-action" onclick="goToStage1()">← 1단계로 돌아가기</button>
+            <button id="btn-draw-mode" class="stage-action" onclick="toggleDrawingMode()" aria-pressed="false">그리기 모드</button>
+            <button id="btn-next-floating" class="floating-next active" onclick="nextStage()">다음 단계 ➜</button>
+        </div>
+
+        <!-- 3D 캔버스 -->
+        <div id="canvas-container"></div>
+
+        <!-- 좌측 하단: 관계 표현 힌트와 단계별 사용 안내 -->
+        <div id="guidance-container">
+            <section id="relationship-guide" hidden>
+                <p>*참여자와 기술과의 관계를 나타낼 수 있는 요소들은 다음과 같습니다.</p>
+                <ul>
+                    <li>심적·물리적 거리감</li>
+                    <li>사용 빈도</li>
+                    <li>긍정·부정의 영향</li>
+                    <li>시선 및 행동</li>
+                </ul>
+            </section>
+            <div id="howto-container" aria-hidden="false">
+                <h3 id="howto-title">How to use</h3>
+                <ol id="howto-list"></ol>
+            </div>
+        </div>
+
+        <!-- 다음 단계 플로팅 버튼은 사이드바 옆에 위치하도록 이동했습니다 -->
+        
+        <!-- 오브젝트 선택용 원형 컨트롤 -->
+        <div id="selection-controls">
+        <button id="ctrl-up"      class="control-btn"><span class="gizmo-icon">⤴</span><span class="gizmo-label">위</span></button>
+        <button id="ctrl-delete"  class="control-btn"><span class="gizmo-icon">✕</span><span class="gizmo-label">삭제</span></button>
+        <button id="ctrl-rotate"  class="control-btn"><span class="gizmo-icon">⟲</span><span class="gizmo-label">회전</span></button>
+        <button id="ctrl-down"    class="control-btn"><span class="gizmo-icon">⤵</span><span class="gizmo-label">아래</span></button>
+        </div>
+
+        <!-- 카테고리별 인벤토리 -->
+        <div id="bottom-ui">
+            <div id="item-bar-container">
+                <div id="item-bar">
+                    <!-- JS에서 카드 생성 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메인 스크립트 -->
+        <script>
+            // Defensive Start button handler: call window.startGame if defined,
+            // otherwise retry shortly (covers slow module load).
+            (function () {
+                function bindStart() {
+                    const startBtn = document.getElementById('start-button');
+                    const archiveBtn = document.getElementById('archive-button');
+                    if (startBtn) {
+                        startBtn.addEventListener('click', () => {
+                            if (typeof window.startGame === 'function') return window.startGame();
+                            // try again shortly if module hasn't initialized yet
+                            setTimeout(() => {
+                                if (typeof window.startGame === 'function') window.startGame();
+                                else console.warn('startGame not available yet');
+                            }, 200);
+                        });
+                    }
+                    if (archiveBtn) {
+                        archiveBtn.addEventListener('click', () => {
+                            if (typeof showLocalGallery === 'function') return showLocalGallery();
+                            setTimeout(() => { if (typeof showLocalGallery === 'function') showLocalGallery(); else console.warn('showLocalGallery not available'); }, 200);
+                        });
+                    }
+                }
+                if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindStart);
+                else bindStart();
+            })();
+        </script>
+        <script type="module" src="main.js"></script>
+
+</body>
+</html>
+
+
+    <!-- 완료 화면 -->
+    <div id="finish-screen" style="display:none;">
+      <div id="finish-inner">
+        <h1 id="finish-title">Living with Tech</h1>
+        <p id="finish-subtitle">다른 사람들의 방도 구경하러 가볼까요?</p>
+        <div style="display:flex; gap:16px; justify-content:center; margin-top:16px;">
+          <button id="finish-save" class="start-btn">Save</button>
+          <button id="stage3-save" class="start-btn" onclick="saveToLocal()">📦 로컬 저장</button>
+          <button id="finish-archive" class="start-btn">Archiving</button>
+        </div>
+      </div>
+    </div>

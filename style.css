@@ -1,0 +1,945 @@
+/* Start screen redesign */
+/* Finish screen */
+#finish-screen { position: fixed; inset: 0; display: grid; place-items: center; background: #fff; z-index: 1000; overflow: hidden; }
+#finish-inner { position: relative; text-align: center; padding: 48px 32px; }
+#finish-inner::after { content:""; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:min(60vmin,520px); height:min(60vmin,520px); border-radius:50%; background: radial-gradient(closest-side, rgba(0,219,128,0.35), rgba(0,219,128,0.18) 55%, rgba(0,219,128,0.0) 70%); filter: blur(6px); pointer-events:none; z-index:-1; }
+#finish-title { font-size:48px; margin:8px 0; color:#001816; }
+#finish-subtitle { margin:0px 0 20px; font-size: 14px; color:#686868; font-weight: 600;}
+#finish-save { background:#00DB80; color:#fff; padding:10px 32px; border-radius:24px; font-size:16px; font-weight:600; border:none; box-shadow:0 4px 12px rgba(0,0,0,0.12); cursor:pointer; }
+#finish-save:hover { transform: translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,0.18); }
+#finish-archive { appearance:none; border:1.5px solid #dfe5e7; background:#fff; color:#111; border-radius:24px; padding:10px 18px; font-size:16px; box-shadow:0 10px 22px rgba(0,0,0,0.12); cursor:pointer; }
+#finish-archive:hover { transform: translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,0.18); }
+
+/* Local save button shown in the finish action row (center) */
+#stage3-save { background:#00DB80; color:#ffffff; padding:10px 32px; border-radius:24px; font-size:16px; font-weight:600; border:none; box-shadow:0 4px 12px rgba(0,0,0,0.12); cursor:pointer; }
+#stage3-save:hover { transform: translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,0.18); }
+
+#start-screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(180deg, #f8fafc 0%, #fcfdff 100%);
+    overflow: hidden;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+#start-screen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 70% 15%, rgba(46, 84, 150, 0.12), transparent 22%),
+                radial-gradient(circle at 20% 80%, rgba(74, 116, 190, 0.14), transparent 20%);
+    pointer-events: none;
+}
+
+#start-screen::after {
+    content: "";
+    position: absolute;
+    width: min(520px, 55vw);
+    height: min(520px, 55vw);
+    border-radius: 50%;
+    right: -90px;
+    top: -90px;
+    background: rgba(229, 236, 250, 0.7);
+    filter: blur(64px);
+    pointer-events: none;
+}
+
+#start-inner {
+    position: relative;
+    z-index: 1;
+    width: min(960px, 100%);
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+}
+
+#start-card {
+    width: 100%;
+    max-width: 860px;
+    padding: 64px 52px;
+    border-radius: 46px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(174, 190, 229, 0.42);
+    box-shadow: 0 36px 90px rgba(59, 94, 156, 0.08);
+    backdrop-filter: blur(14px);
+}
+
+#start-title {
+    font-size: clamp(52px, 5.5vw, 80px);
+    margin: 0;
+    color: #1e3558;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    font-weight: 800;
+}
+
+#start-subtitle {
+    margin: -20px auto 0;
+    max-width: 760px;
+    color: #20334d;
+    font-size: 20px;
+    line-height: 1.72;
+    font-weight: 600;
+}
+
+#start-hint {
+    color: rgba(34, 49, 73, 0.52);
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+/* Floating next-step button styling: larger and anchored to the right */
+.floating-next {
+    position: fixed;
+    /* anchor near the right edge so the button visually hugs the sidebar */
+    right: 48px;
+    /* Align vertically with the top category label */
+    top: 24px;
+    transform: translateY(0);
+    z-index: 1400;
+    background: #00DB80; /* match other primary controls */
+    color: #ffffff;
+    border: none;
+    /* match sizing with other controls (draw toolbar / floating-draw) */
+    padding: 10px 20px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    writing-mode: horizontal-tb;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+}
+
+/* Active state: when a bed has been placed */
+.floating-next.active {
+    background: #00DB80;
+    color: #ffffff;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.16);
+}
+
+/* Explicit disabled visual */
+.floating-next.disabled {
+    background: #eef0f2;
+    color: #6c757d;
+    box-shadow: none;
+}
+
+.floating-next:hover { filter: brightness(0.95); }
+
+@media (max-width: 1200px) {
+    .floating-next { right: 32px; padding: 14px 28px; font-size: 18px; top: 20px; }
+}
+
+@media (max-width: 900px) {
+    .floating-next { right: 12px; padding: 12px 20px; font-size: 16px; top: 16px; }
+}
+
+/* When the floating button is placed inside the right sidebar DOM (`#bottom-ui`),
+   keep it visually hugging the outside of the sidebar (to the left edge). */
+#bottom-ui > .floating-next {
+    position: absolute;
+    right: calc(100% + 14px); /* place to the left of the sidebar */
+    top: 20px;
+    z-index: 1400;
+}
+
+@media (max-width: 800px) {
+    #bottom-ui > .floating-next { right: 12px; top: 12%; }
+}
+
+/* Draw-stage floating button (placed under the next button) */
+.floating-draw {
+    position: fixed;
+    right: 48px;
+    top: 88px; /* sits below the larger '완성' button */
+    z-index: 1400;
+    background: #ffffff;
+    color: #00DB80;
+    border: 1.5px solid rgba(0,219,128,0.12);
+    padding: 10px 18px;
+    border-radius: 14px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.floating-draw:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+
+@media (max-width: 900px) {
+    .floating-draw { right: 12px; top: 56px; }
+}
+
+
+#start-button {
+    background-color: #00DB80!important; /* 혹시 기존 스타일이 덮어써도 강제로 초록색 */
+    color: #ffffff !important;
+    padding: 10px 32px;
+    border-radius: 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+#start-button:hover {
+    background-color: #00DB80 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+
+/* Reusable style matching the start-screen Archiving button (outline/ghost) */
+.archive-btn {
+    appearance: none;
+    border: 1.5px solid #dfe5e7;
+    background: #fff;
+    color: #111;
+    border-radius: 24px;
+    padding: 10px 18px;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+    cursor: pointer;
+    transition: transform .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.archive-btn:hover {
+    background-color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+
+/* Small brand label used above archive modal title */
+.archive-brand {
+    font-size: 12px;
+    color: #00DB80;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+/* Archive modal main title: larger and bolder per request */
+.archive-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #111;
+    margin: 0;
+    line-height: 1.05;
+    letter-spacing: 3px;
+}
+
+@media (max-width: 600px) {
+    .archive-title { font-size: 20px; }
+    .archive-brand { font-size: 10px; letter-spacing: 10px; }
+}
+
+/* 중앙 그라데이션 원 */
+#start-inner::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(60vmin, 520px);
+    height: min(60vmin, 520px);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(29,181,124,0.35), rgba(29,181,124,0.18) 55%, rgba(29,181,124,0.0) 70%);
+    filter: blur(6px);
+    pointer-events: none;
+    z-index: -1;
+}
+/* ========== 기본 세팅 ========== */
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Pretendard', sans-serif; /* 폰트 설정 */
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ========== 상단 UI 영역 (기존 유지) ========== */
+#ui-container {
+    position: absolute;
+    top: 50px; /* moved further down (additional 20px) per request */
+    left: 50px; /* move slightly more right to match visual spacing */
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    z-index: 100;
+    /* increase max-width so the large heading wraps similarly to the reference image */
+    max-width: 400px;
+}
+
+/* Larger title + paragraph specifically for the top UI container */
+#ui-container h1 {
+    font-size: 56px; /* match the large headline in the reference */
+    font-weight: 800;
+    margin: 8px 20px 12px 0;
+    color: #013637;
+    line-height: 0.98;
+    word-break: keep-all;
+    letter-spacing: -0.5px;
+}
+
+#ui-container p {
+    /* Match the start-screen subtitle style for visual consistency */
+    font-size: 14px;
+    color: #222222;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+}
+
+/* Stage info block (label, description, optional tips) */
+#step-info {
+    /* slightly higher so the STEP block sits closer to the title */
+    margin-top: 40px;
+}
+
+#step-label {
+    /* Match LIVEBETTER small label style */
+    font-size: 16px;
+    color: #00DB80;
+    font-weight: 800;
+    margin-bottom: 6px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
+/* stronger selector to ensure the step label isn't styled by other generic rules */
+#ui-container #step-info #step-label,
+#ui-container .stage-label {
+    font-size: 16px !important;
+    color: #00DB80 !important;
+    font-weight: 800 !important;
+    letter-spacing: 5px !important;
+    text-transform: uppercase !important;
+    display: block;
+    margin-bottom: 6px;
+}
+
+#step-desc {
+    font-size: 20px;
+    color: #222;
+    font-weight: 700;
+    line-height: 1.28;
+    margin-bottom: 6px;
+}
+
+.step-tips {
+    margin: 0 0 0 0;
+    font-size: 13px;
+    color: #666;
+    display: none; /* shown only if tips exist */
+    list-style: none; /* remove default bullets */
+    padding-left: 0; /* remove left padding so text aligns left */
+    margin-left: 0px; /* nudge left slightly relative to container */
+}
+
+/* ensure individual tip items have some spacing */
+.step-tips li { margin-bottom: 6px; white-space: pre-line; }
+
+
+#step-info.show-tips .step-tips { display: block; }
+
+/* small responsive tweak: reduce font on narrow screens */
+@media (max-width: 600px) {
+    #step-desc { font-size: 13px; }
+    #step-label { font-size: 11px; }
+    #step-info { margin-top: 10px; }
+}
+
+@media (max-width: 800px) {
+    #ui-container { left: 16px; top: 28px; max-width: 260px; }
+    #ui-container h1 { font-size: 36px; }
+    #ui-container p  { font-size: 15px; }
+}
+
+h1 {
+    margin: 40px 0 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+/* When UI elements are moved into the draw layer we want them to keep their
+   original visual styles. Target draw-layer specifically so these rules
+   only apply while the elements are temporarily inside the draw overlay. */
+#draw-layer .livebetter-label {
+    font-size: 15px;
+    color: #00DB80;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin: 0 0 6px 0;
+    pointer-events: none;
+    z-index: 1223;
+}
+
+#draw-layer h1 {
+    font-size: 56px;
+    margin: 6px 0;
+    /* Match the UI-container headline color used in stage 2 */
+    color: #013637;
+    font-weight: 800;
+    line-height: 0.98;
+    pointer-events: none;
+    z-index: 1222;
+    letter-spacing: -0.5px;
+}
+
+#draw-layer #step-info {
+    /* keep layout/typography but remove the white card appearance so it
+       looks like the original UI while placed over the draw canvas */
+    background: transparent; /* no white box */
+    padding: 0; /* follow original UI spacing */
+    border-radius: 0;
+    box-shadow: none;
+    pointer-events: none;
+    z-index: 1221;
+    /* match the non-draw layout by nudging the STEP block slightly higher */
+    margin-top: 28px;
+}
+
+#draw-layer #step-info #step-desc {
+    color: #222;
+    font-size: 20px;
+    line-height: 1.28;
+    font-weight: 700;
+}
+
+/* Ensure the small STEP label inside the draw-layer uses the same green
+   color/spacing as the normal UI so stage 3 matches stage 2 visually. */
+#draw-layer #step-info #step-label {
+    color: #00DB80;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 4x;
+}
+
+@media (max-width: 1200px) {
+    #ui-container h1 { font-size: 56px; }
+}
+
+@media (max-width: 800px) {
+    #draw-layer h1 { font-size: 40px; }
+    #draw-layer #step-info { padding: 6px 10px; }
+    #ui-container h1 { font-size: 40px; }
+    #ui-container { left: 24px; max-width: 320px; }
+}
+
+p {
+    margin: 0 0 10px 0;
+    font-size: 12px;
+    color: #666;
+}
+
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.add-btn {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #e9ecef;
+    color: #495057;
+    transition: background-color 0.15s;
+}
+
+.add-btn:hover {
+    background: #dee2e6;
+}
+
+#edit-help {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #888;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+/* ========== 시작 화면 UI ========== */
+/* 시작 화면 스타일은 위쪽 Start screen redesign 블록에서 정의됩니다. */
+
+/* ===== 오브젝트 선택 컨트롤 (원형 링 UI) ===== */
+#selection-controls {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  pointer-events: none;       /* 래퍼는 클릭 안 먹게 */
+  display: none;              /* 선택 있을 때만 JS가 켬 */
+  z-index: 150;
+}
+
+/* 공통 버튼 스타일 - 기즈모: 사각 버튼, 아이콘 위, 레이블 아래 */
+#selection-controls .control-btn {
+    position: absolute;
+    width: 72px;
+    height: 72px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.95);
+    background: rgba(255,255,255,0.98);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 14px;
+    color: #111;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+/* Hover: remove lift animation — only subtle color/border change */
+#selection-controls .control-btn:hover {
+    /* do not override transform - keep positional translate values */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12); /* subtle shadow */
+    background: rgba(245,245,245,1); /* slight color change */
+    border-color: rgba(0,0,0,0.06);
+}
+
+/* Icon + label inside the button */
+.gizmo-icon {
+    font-size: 26px;
+    line-height: 1;
+}
+.gizmo-label {
+    font-size: 12px;
+    line-height: 1;
+    color: #222;
+}
+
+/* Position buttons in a cross similar to the reference image */
+/* top */
+#ctrl-up { top: -64px; left: 50%; transform: translate(-50%, 0); z-index: 3; }
+/* left */
+#ctrl-delete { left: -64px; top: 50%; transform: translate(0, -50%); z-index: 1; }
+/* right */
+#ctrl-rotate { right: -64px; top: 50%; transform: translate(0, -50%); z-index: 1; }
+/* bottom */
+#ctrl-down { bottom: -64px; left: 50%; transform: translate(-50%, 0); z-index: 2; }
+
+@media (max-width: 800px) {
+    #selection-controls .control-btn { width: 60px; height: 60px; }
+    .gizmo-icon { font-size: 20px; }
+    .gizmo-label { font-size: 11px; }
+    #ctrl-up { top: -48px; }
+    #ctrl-delete { left: -48px; }
+    #ctrl-rotate { right: -48px; }
+    #ctrl-down { bottom: -48px; }
+}
+
+
+/* ===============================
+    우측 사이드바 UI
+================================== */
+
+/* 하단 전체 UI 래퍼 (이제 우측 사이드바) */
+#bottom-ui {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 200px; /* 전체 사이드바 너비 */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    z-index: 200;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: -4px 0 12px rgba(0,0,0,0.1);
+    pointer-events: auto;
+    box-sizing: border-box;
+}
+
+/* 카테고리별 아이템 영역 */
+#item-bar-container {
+    flex: 1;
+    min-height: 0;
+    background: rgb(248, 248, 248);
+    overflow: hidden;
+    box-shadow: none;
+}
+
+#item-bar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+}
+
+.inventory-category {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.inventory-category + .inventory-category {
+    border-top: 1px solid #dee2e6;
+}
+
+.inventory-category-title {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 6px 8px;
+    color: #343a40;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.inventory-category-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+}
+
+.inventory-category-items {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    justify-items: center;
+    gap: 8px;
+    padding: 0 6px 8px;
+    box-sizing: border-box;
+}
+
+.inventory-category-empty {
+    grid-column: 1 / -1;
+    margin: 8px 0;
+    color: #6c757d;
+    font-size: 13px;
+}
+
+
+/* 아이템 카드 디자인 조정 */
+.item-card {
+    position: relative;
+    flex: 0 0 auto;
+    width: 76px; /* 200px 너비 기준 2열로 배치되도록 조정 */
+    height: 76px;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    background: #efefef;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.15s, transform 0.15s;
+    overflow: hidden;
+
+    justify-content: center;  
+    align-items: center;
+    
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    text-align: center;
+    overflow: hidden; /* 혹시 이미지 크기 때문에 밀림 방지 */
+}
+
+.item-card:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.item-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    background: rgba(31, 37, 39, 0.88);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    opacity: 0;
+    transition: opacity 0.15s;
+    pointer-events: none;
+}
+
+.item-card:hover .item-label,
+.item-card:focus-visible .item-label {
+    opacity: 1;
+}
+
+.item-card-text {
+    box-sizing: border-box;
+    height: auto;
+    min-height: 76px;
+    padding: 8px;
+    color: #343a40;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+.item-card img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    margin-bottom: 4px;
+}
+
+.item-card span {
+    font-size: 10px;
+    color: #666;
+    text-align: center;
+    padding: 0 4px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* 스크롤바 디자인 */
+.inventory-category-items::-webkit-scrollbar {
+    width: 6px;
+}
+
+.inventory-category-items::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.inventory-category-items::-webkit-scrollbar-thumb {
+    background: #ced4da;
+    border-radius: 3px;
+}
+
+/* 투명 드로잉 레이어 */
+#draw-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  overflow: hidden;
+}
+#draw-layer::before { display: none; }
+
+#draw-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+  touch-action: none;
+  pointer-events: none;
+}
+
+#stage-actions {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+#stage-actions .floating-next { position: static; }
+#stage-actions.stage-two { right: 212px; }
+
+@media (max-width: 650px) {
+  #stage-actions.stage-two { right: auto; left: 8px; top: 8px; align-items: flex-start; }
+  #stage-actions.stage-two button { min-width: 0; padding: 8px; font-size: 12px; }
+}
+
+.stage-action {
+  border: 1px solid #dfe5e7;
+  border-radius: 14px;
+  background: #fff;
+  padding: 10px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.stage-action[aria-pressed="true"] { color: #008c54; border-color: #00db80; }
+#bottom-ui.drawing-mode { pointer-events: none; opacity: 0.55; }
+
+/* =========================
+   좌측 하단 How-to 안내 박스
+   ========================= */
+#guidance-container {
+    position: fixed;
+    left: 50px;
+    bottom: 40px;
+    z-index: 800;
+    max-width: min(420px, calc(100vw - 100px));
+}
+
+#relationship-guide {
+    margin: 0 0 28px;
+    color: #666;
+    font-size: 13px;
+    line-height: 1.6;
+    word-break: keep-all;
+}
+
+#relationship-guide p {
+    margin: 0 0 12px;
+    font-size: inherit;
+    color: inherit;
+}
+
+#relationship-guide ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#howto-container {
+    background: #ffffff;
+    border: 1px solid rgba(0,219,128,0.18);
+    padding: 18px 22px;
+    border-radius: 18px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    max-width: 420px;
+}
+
+#howto-title {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: #00DB80;
+    font-weight: 700;
+}
+
+#howto-list {
+    font-size: 1px;
+    margin: 0;
+    padding-left: 16px;
+    color: #111;
+}
+
+/* slightly smaller for a cleaner compact look */
+#howto-list li { margin-bottom: 8px; font-size: 14px; }
+
+@media (max-width: 800px) {
+    #guidance-container { left: 24px; bottom: 12px; max-width: min(420px, calc(100vw - 48px)); }
+    #relationship-guide { margin-bottom: 16px; }
+    #howto-container { padding: 12px 14px; }
+    #howto-title { font-size: 20px; }
+    #howto-list li { font-size: 13px; }
+}
+
+/* 드로잉 툴바 */
+#draw-toolbar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  background: rgba(255,255,255,0.85);
+  padding: 10px 12px;
+  border-radius: 999px;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+  z-index: 850;
+  max-width: calc(100vw - 24px);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#draw-toolbar button {
+  appearance: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid #dfe5e7;
+  font-size: 12px;
+  background: #ffffff;
+  color: #111;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: background .2s ease, color .2s ease, box-shadow .2s ease, border-color .2s ease, transform .15s ease;
+}
+#draw-toolbar button:hover {
+  background-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+
+#draw-toolbar button:disabled {
+    opacity: 0.45;
+    cursor: default;
+    transform: none;
+    box-shadow: none;
+}
+#draw-toolbar #draw-erase[aria-pressed="true"] {
+    color: #008c54;
+    border-color: #00db80;
+    background: #e8fff4;
+}
+/* 주요 액션(완료) 버튼 초록 스타일 */
+#draw-toolbar button:last-child,
+#draw-toolbar button[action="primary"],
+#draw-toolbar .btn-primary {
+  background-color: #00DB80 !important;
+  color: #ffffff !important;
+  border: none;
+}
+
+/* Color swatches inside the draw toolbar */
+#draw-toolbar .draw-color-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    padding: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(0,0,0,0.06);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    background-clip: padding-box;
+}
+
+/* Force the last color swatch to yellow to match actual drawing color */
+#draw-toolbar .draw-color-btn:last-of-type {
+    background-color: #f59f00 !important;
+}
+
+/* ---------- Override: unified subtitle style ---------- */
+/* Ensure the app UI subtitle matches the intended stage styling, without changing the start-screen headline */
+#ui-container p {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #666 !important;
+    line-height: 1.4 !important;
+    letter-spacing: 0 !important;
+}
+
+
