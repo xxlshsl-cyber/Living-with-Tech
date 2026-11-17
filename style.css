@@ -5,13 +5,12 @@
 #finish-inner::after { content:""; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:min(60vmin,520px); height:min(60vmin,520px); border-radius:50%; background: radial-gradient(closest-side, rgba(0,219,128,0.35), rgba(0,219,128,0.18) 55%, rgba(0,219,128,0.0) 70%); filter: blur(6px); pointer-events:none; z-index:-1; }
 #finish-title { font-size:48px; margin:8px 0; color:#001816; }
 #finish-subtitle { margin:0px 0 20px; font-size: 14px; color:#686868; font-weight: 600;}
-#finish-save { background:#00DB80; color:#fff; padding:10px 32px; border-radius:24px; font-size:16px; font-weight:600; border:none; box-shadow:0 4px 12px rgba(0,0,0,0.12); cursor:pointer; }
+#finish-save { background:#00DB80; color:#fff; padding:10px 32px; border-radius:24px; font-size:16px; font-weight:600; border:none; box-shadow:0 4px 12px rgba(0,0,0,0.12); cursor:pointer; -webkit-tap-highlight-color: transparent; }
 #finish-save:hover { transform: translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,0.18); }
-#finish-archive { appearance:none; border:1.5px solid #dfe5e7; background:#fff; color:#111; border-radius:24px; padding:10px 18px; font-size:16px; box-shadow:0 10px 22px rgba(0,0,0,0.12); cursor:pointer; }
+#finish-archive { appearance:none; border:1.5px solid #dfe5e7; background:#fff; color:#111; border-radius:24px; padding:10px 18px; font-size:16px; box-shadow:0 10px 22px rgba(0,0,0,0.12); cursor:pointer; -webkit-tap-highlight-color: transparent; }
 #finish-archive:hover { transform: translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,0.18); }
 
-/* Local save button shown in the finish action row (center) */
-#stage3-save { background:#00DB80; color:#ffffff; padding:10px 32px; border-radius:24px; font-size:16px; font-weight:600; border:none; box-shadow:0 4px 12px rgba(0,0,0,0.12); cursor:pointer; }
+#stage3-save { background:#00DB80; color:#ffffff; padding:10px 32px; border-radius:24px; font-size:16px; font-weight:600; border:none; box-shadow:0 4px 12px rgba(0,0,0,0.12); cursor:pointer; -webkit-tap-highlight-color: transparent; }
 #stage3-save:hover { transform: translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,0.18); }
 
 #start-screen {
@@ -24,6 +23,7 @@
     overflow: hidden;
     z-index: 1000;
     cursor: pointer;
+    touch-action: manipulation;
 }
 
 #start-screen::before {
@@ -96,19 +96,15 @@
     font-weight: 600;
 }
 
-/* Floating next-step button styling: larger and anchored to the right */
 .floating-next {
     position: fixed;
-    /* anchor near the right edge so the button visually hugs the sidebar */
     right: 48px;
-    /* Align vertically with the top category label */
     top: 24px;
     transform: translateY(0);
     z-index: 1400;
-    background: #00DB80; /* match other primary controls */
+    background: #00DB80;
     color: #ffffff;
     border: none;
-    /* match sizing with other controls (draw toolbar / floating-draw) */
     padding: 10px 20px;
     border-radius: 14px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.12);
@@ -121,16 +117,16 @@
     align-items: center;
     justify-content: center;
     min-width: 140px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* Active state: when a bed has been placed */
 .floating-next.active {
     background: #00DB80;
     color: #ffffff;
     box-shadow: 0 8px 24px rgba(0,0,0,0.16);
 }
 
-/* Explicit disabled visual */
 .floating-next.disabled {
     background: #eef0f2;
     color: #6c757d;
@@ -147,11 +143,9 @@
     .floating-next { right: 12px; padding: 12px 20px; font-size: 16px; top: 16px; }
 }
 
-/* When the floating button is placed inside the right sidebar DOM (`#bottom-ui`),
-   keep it visually hugging the outside of the sidebar (to the left edge). */
 #bottom-ui > .floating-next {
     position: absolute;
-    right: calc(100% + 14px); /* place to the left of the sidebar */
+    right: calc(100% + 14px);
     top: 20px;
     z-index: 1400;
 }
@@ -160,11 +154,10 @@
     #bottom-ui > .floating-next { right: 12px; top: 12%; }
 }
 
-/* Draw-stage floating button (placed under the next button) */
 .floating-draw {
     position: fixed;
     right: 48px;
-    top: 88px; /* sits below the larger '완성' button */
+    top: 88px;
     z-index: 1400;
     background: #ffffff;
     color: #00DB80;
@@ -174,6 +167,8 @@
     box-shadow: 0 8px 22px rgba(0,0,0,0.08);
     font-weight: 700;
     cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .floating-draw:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
@@ -182,9 +177,8 @@
     .floating-draw { right: 12px; top: 56px; }
 }
 
-
 #start-button {
-    background-color: #00DB80!important; /* 혹시 기존 스타일이 덮어써도 강제로 초록색 */
+    background-color: #00DB80 !important;
     color: #ffffff !important;
     padding: 10px 32px;
     border-radius: 24px;
@@ -194,6 +188,8 @@
     border: none;
     box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 #start-button:hover {
@@ -202,7 +198,6 @@
     box-shadow: 0 8px 18px rgba(0,0,0,0.18);
 }
 
-/* Reusable style matching the start-screen Archiving button (outline/ghost) */
 .archive-btn {
     appearance: none;
     border: 1.5px solid #dfe5e7;
@@ -215,6 +210,8 @@
     box-shadow: 0 10px 22px rgba(0,0,0,0.12);
     cursor: pointer;
     transition: transform .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease, border-color .2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 .archive-btn:hover {
     background-color: #ffffff !important;
@@ -222,7 +219,6 @@
     box-shadow: 0 8px 18px rgba(0,0,0,0.18);
 }
 
-/* Small brand label used above archive modal title */
 .archive-brand {
     font-size: 12px;
     color: #00DB80;
@@ -232,7 +228,6 @@
     margin: 0;
 }
 
-/* Archive modal main title: larger and bolder per request */
 .archive-title {
     font-size: 28px;
     font-weight: 800;
@@ -247,7 +242,6 @@
     .archive-brand { font-size: 10px; letter-spacing: 10px; }
 }
 
-/* 중앙 그라데이션 원 */
 #start-inner::after {
     content: "";
     position: absolute;
@@ -262,31 +256,34 @@
     pointer-events: none;
     z-index: -1;
 }
-/* ========== 기본 세팅 ========== */
+
 body {
     margin: 0;
     overflow: hidden;
-    font-family: 'Pretendard', sans-serif; /* 폰트 설정 */
+    font-family: 'Pretendard', sans-serif;
     -webkit-font-smoothing: antialiased;
+    touch-action: manipulation;
 }
 
-/* ========== 상단 UI 영역 (기존 유지) ========== */
 #ui-container {
     position: absolute;
-    top: 50px; /* moved further down (additional 20px) per request */
-    left: 50px; /* move slightly more right to match visual spacing */
+    top: 50px;
+    left: 50px;
     background: transparent;
     padding: 0;
     border-radius: 0;
     box-shadow: none;
     z-index: 100;
-    /* increase max-width so the large heading wraps similarly to the reference image */
     max-width: 400px;
+    pointer-events: none;
 }
 
-/* Larger title + paragraph specifically for the top UI container */
+#ui-container * {
+    pointer-events: auto;
+}
+
 #ui-container h1 {
-    font-size: 56px; /* match the large headline in the reference */
+    font-size: 56px;
     font-weight: 800;
     margin: 8px 20px 12px 0;
     color: #013637;
@@ -296,21 +293,17 @@ body {
 }
 
 #ui-container p {
-    /* Match the start-screen subtitle style for visual consistency */
     font-size: 14px;
     color: #222222;
     font-weight: 700;
     margin: 0 0 20px 0;
 }
 
-/* Stage info block (label, description, optional tips) */
 #step-info {
-    /* slightly higher so the STEP block sits closer to the title */
     margin-top: 40px;
 }
 
 #step-label {
-    /* Match LIVEBETTER small label style */
     font-size: 16px;
     color: #00DB80;
     font-weight: 800;
@@ -319,7 +312,6 @@ body {
     text-transform: uppercase;
 }
 
-/* stronger selector to ensure the step label isn't styled by other generic rules */
 #ui-container #step-info #step-label,
 #ui-container .stage-label {
     font-size: 16px !important;
@@ -340,22 +332,18 @@ body {
 }
 
 .step-tips {
-    margin: 0 0 0 0;
+    margin: 0;
     font-size: 13px;
     color: #666;
-    display: none; /* shown only if tips exist */
-    list-style: none; /* remove default bullets */
-    padding-left: 0; /* remove left padding so text aligns left */
-    margin-left: 0px; /* nudge left slightly relative to container */
+    display: none;
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0px;
 }
 
-/* ensure individual tip items have some spacing */
 .step-tips li { margin-bottom: 6px; white-space: pre-line; }
-
-
 #step-info.show-tips .step-tips { display: block; }
 
-/* small responsive tweak: reduce font on narrow screens */
 @media (max-width: 600px) {
     #step-desc { font-size: 13px; }
     #step-label { font-size: 11px; }
@@ -374,9 +362,6 @@ h1 {
     color: #333;
 }
 
-/* When UI elements are moved into the draw layer we want them to keep their
-   original visual styles. Target draw-layer specifically so these rules
-   only apply while the elements are temporarily inside the draw overlay. */
 #draw-layer .livebetter-label {
     font-size: 15px;
     color: #00DB80;
@@ -391,7 +376,6 @@ h1 {
 #draw-layer h1 {
     font-size: 56px;
     margin: 6px 0;
-    /* Match the UI-container headline color used in stage 2 */
     color: #013637;
     font-weight: 800;
     line-height: 0.98;
@@ -401,15 +385,12 @@ h1 {
 }
 
 #draw-layer #step-info {
-    /* keep layout/typography but remove the white card appearance so it
-       looks like the original UI while placed over the draw canvas */
-    background: transparent; /* no white box */
-    padding: 0; /* follow original UI spacing */
+    background: transparent;
+    padding: 0;
     border-radius: 0;
     box-shadow: none;
     pointer-events: none;
     z-index: 1221;
-    /* match the non-draw layout by nudging the STEP block slightly higher */
     margin-top: 28px;
 }
 
@@ -420,15 +401,13 @@ h1 {
     font-weight: 700;
 }
 
-/* Ensure the small STEP label inside the draw-layer uses the same green
-   color/spacing as the normal UI so stage 3 matches stage 2 visually. */
 #draw-layer #step-info #step-label {
     color: #00DB80;
     font-size: 16px;
     font-weight: 800;
     letter-spacing: 5px;
     text-transform: uppercase;
-    margin-bottom: 4x;
+    margin-bottom: 4px;
 }
 
 @media (max-width: 1200px) {
@@ -464,6 +443,7 @@ p {
     background: #e9ecef;
     color: #495057;
     transition: background-color 0.15s;
+    touch-action: manipulation;
 }
 
 .add-btn:hover {
@@ -478,20 +458,15 @@ p {
     margin-bottom: 0;
 }
 
-/* ========== 시작 화면 UI ========== */
-/* 시작 화면 스타일은 위쪽 Start screen redesign 블록에서 정의됩니다. */
-
-/* ===== 오브젝트 선택 컨트롤 (원형 링 UI) ===== */
 #selection-controls {
   position: absolute;
   width: 120px;
   height: 120px;
-  pointer-events: none;       /* 래퍼는 클릭 안 먹게 */
-  display: none;              /* 선택 있을 때만 JS가 켬 */
+  pointer-events: none;
+  display: none;
   z-index: 150;
 }
 
-/* 공통 버튼 스타일 - 기즈모: 사각 버튼, 아이콘 위, 레이블 아래 */
 #selection-controls .control-btn {
     position: absolute;
     width: 72px;
@@ -510,17 +485,16 @@ p {
     cursor: pointer;
     pointer-events: auto;
     transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* Hover: remove lift animation — only subtle color/border change */
 #selection-controls .control-btn:hover {
-    /* do not override transform - keep positional translate values */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.12); /* subtle shadow */
-    background: rgba(245,245,245,1); /* slight color change */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    background: rgba(245,245,245,1);
     border-color: rgba(0,0,0,0.06);
 }
 
-/* Icon + label inside the button */
 .gizmo-icon {
     font-size: 26px;
     line-height: 1;
@@ -531,14 +505,9 @@ p {
     color: #222;
 }
 
-/* Position buttons in a cross similar to the reference image */
-/* top */
 #ctrl-up { top: -64px; left: 50%; transform: translate(-50%, 0); z-index: 3; }
-/* left */
 #ctrl-delete { left: -64px; top: 50%; transform: translate(0, -50%); z-index: 1; }
-/* right */
 #ctrl-rotate { right: -64px; top: 50%; transform: translate(0, -50%); z-index: 1; }
-/* bottom */
 #ctrl-down { bottom: -64px; left: 50%; transform: translate(-50%, 0); z-index: 2; }
 
 @media (max-width: 800px) {
@@ -551,18 +520,12 @@ p {
     #ctrl-down { bottom: -48px; }
 }
 
-
-/* ===============================
-    우측 사이드바 UI
-================================== */
-
-/* 하단 전체 UI 래퍼 (이제 우측 사이드바) */
 #bottom-ui {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 200px; /* 전체 사이드바 너비 */
+    width: 200px;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -574,7 +537,6 @@ p {
     box-sizing: border-box;
 }
 
-/* 카테고리별 아이템 영역 */
 #item-bar-container {
     flex: 1;
     min-height: 0;
@@ -623,6 +585,7 @@ p {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-content: start;
@@ -639,12 +602,10 @@ p {
     font-size: 13px;
 }
 
-
-/* 아이템 카드 디자인 조정 */
 .item-card {
     position: relative;
     flex: 0 0 auto;
-    width: 76px; /* 200px 너비 기준 2열로 배치되도록 조정 */
+    width: 76px;
     height: 76px;
     padding: 0;
     border: 0;
@@ -658,14 +619,9 @@ p {
     justify-content: center;
     transition: box-shadow 0.15s, transform 0.15s;
     overflow: hidden;
-
-    justify-content: center;  
-    align-items: center;
-    
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
     text-align: center;
-    overflow: hidden; /* 혹시 이미지 크기 때문에 밀림 방지 */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .item-card:hover {
@@ -729,7 +685,6 @@ p {
     text-overflow: ellipsis;
 }
 
-/* 스크롤바 디자인 */
 .inventory-category-items::-webkit-scrollbar {
     width: 6px;
 }
@@ -743,7 +698,6 @@ p {
     border-radius: 3px;
 }
 
-/* 투명 드로잉 레이어 */
 #draw-layer {
   position: fixed;
   inset: 0;
@@ -771,6 +725,7 @@ p {
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
+  pointer-events: auto;
 }
 
 #stage-actions .floating-next { position: static; }
@@ -782,27 +737,31 @@ p {
 }
 
 .stage-action {
-  border: 1px solid #dfe5e7;
+  border: 1.5px solid #dfe5e7;
   border-radius: 14px;
   background: #fff;
   padding: 10px 18px;
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .stage-action[aria-pressed="true"] { color: #008c54; border-color: #00db80; }
 #bottom-ui.drawing-mode { pointer-events: none; opacity: 0.55; }
 
-/* =========================
-   좌측 하단 How-to 안내 박스
-   ========================= */
 #guidance-container {
     position: fixed;
     left: 50px;
     bottom: 40px;
     z-index: 800;
     max-width: min(420px, calc(100vw - 100px));
+    pointer-events: none;
+}
+
+#guidance-container > * {
+    pointer-events: auto;
 }
 
 #relationship-guide {
@@ -848,7 +807,6 @@ p {
     color: #111;
 }
 
-/* slightly smaller for a cleaner compact look */
 #howto-list li { margin-bottom: 8px; font-size: 14px; }
 
 @media (max-width: 800px) {
@@ -859,7 +817,6 @@ p {
     #howto-list li { font-size: 13px; }
 }
 
-/* 드로잉 툴바 */
 #draw-toolbar {
   position: fixed;
   bottom: 24px;
@@ -888,6 +845,8 @@ p {
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   transition: background .2s ease, color .2s ease, box-shadow .2s ease, border-color .2s ease, transform .15s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 #draw-toolbar button:hover {
   background-color: #ffffff;
@@ -906,7 +865,7 @@ p {
     border-color: #00db80;
     background: #e8fff4;
 }
-/* 주요 액션(완료) 버튼 초록 스타일 */
+
 #draw-toolbar button:last-child,
 #draw-toolbar button[action="primary"],
 #draw-toolbar .btn-primary {
@@ -915,7 +874,6 @@ p {
   border: none;
 }
 
-/* Color swatches inside the draw toolbar */
 #draw-toolbar .draw-color-btn {
     width: 36px;
     height: 36px;
@@ -927,13 +885,10 @@ p {
     background-clip: padding-box;
 }
 
-/* Force the last color swatch to yellow to match actual drawing color */
 #draw-toolbar .draw-color-btn:last-of-type {
     background-color: #f59f00 !important;
 }
 
-/* ---------- Override: unified subtitle style ---------- */
-/* Ensure the app UI subtitle matches the intended stage styling, without changing the start-screen headline */
 #ui-container p {
     font-size: 14px !important;
     font-weight: 600 !important;
@@ -941,5 +896,3 @@ p {
     line-height: 1.4 !important;
     letter-spacing: 0 !important;
 }
-
-
